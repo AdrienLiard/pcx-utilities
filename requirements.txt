@@ -1,2 +1,4 @@
 requests
 spacy
+flask
+pandas

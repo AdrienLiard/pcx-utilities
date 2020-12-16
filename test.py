@@ -12,7 +12,3 @@ class TestProcess(unittest.TestCase):
         ]
         consolidated = consolidate_sentiment(result)
         self.assertEqual(len(consolidated), 2)
-        self.assertEqual(consolidated, [
-            {"topic": "a", "sentiment": "positive"},
-            {"topic": "b", "sentiment": "negative"}
-        ])
