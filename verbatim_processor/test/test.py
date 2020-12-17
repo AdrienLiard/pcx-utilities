@@ -1,5 +1,5 @@
 import unittest
-from .pre_processing import consolidate_sentiment
+from ..pre_processing import consolidate_sentiment
 
 
 class TestProcess(unittest.TestCase):
@@ -27,3 +27,5 @@ class TestProcess(unittest.TestCase):
         ]
         consolidated = consolidate_sentiment(result)
         self.assertEqual(consolidated[1],"negative")
+
+

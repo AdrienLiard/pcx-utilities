@@ -94,9 +94,6 @@ class FileProcessor():
         return [self.id_column, self.date_column, self.verbatim_column] + [m.column_name for m in self.meta_columns]
 
 
-    def __recode_columns(self):
-        pass
-
     def __get_dataframe_from_path(self,filepath)->pd.DataFrame:
         if filepath.split(".")[1] == "xlsx":
             data = pd.read_excel(filepath, parse_dates=[self.date_column], encoding=self.encoding)
