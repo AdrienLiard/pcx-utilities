@@ -3,7 +3,6 @@ from verbatim_processor.pre_processing import FileProcessor, Recoder, MetaColumn
 from verbatim_processor.pipeline.task import FileReaderTask
 from verbatim_processor.pipeline.task_runner import FileTaskRunner
 from verbatim_processor.processors.processors import recod_nps
-from verbatim_processor.processors.register import register
 import unittest
 import os
 from pathlib import Path
