@@ -8,10 +8,11 @@ from typing import Any, Callable, Dict, List, Union
 from .recoder import Recoder
 from .meta_column import MetaColumn
 from ..processors import processors
+from ..pipeline.task import Task
+from pathlib import Path
 
 
-
-class FileProcessor():
+class FileProcessor(Task):
 
     @staticmethod
     def deserialize(params)->Dict:
@@ -36,6 +37,7 @@ class FileProcessor():
 
 
     def __init__(self,
+                name,
                  verbatim_column:str,
                  date_column:str,
                  id_column:str,
@@ -45,6 +47,7 @@ class FileProcessor():
                  encoding:str='utf-8',
                  generate_id=False, 
                  csv_separator=","):
+        super().__init__(name)
         self.verbatim_column = verbatim_column
         self.date_column = date_column
         self.id_column = id_column
@@ -54,6 +57,7 @@ class FileProcessor():
         self.encoding = encoding
         self.generate_id = generate_id
         self.csv_separator = csv_separator
+        self.output_extension = "json"
 
     def __rename_columns(self, original_columns):
         columns = []
@@ -94,22 +98,22 @@ class FileProcessor():
         return [self.id_column, self.date_column, self.verbatim_column] + [m.column_name for m in self.meta_columns]
 
 
-    def __get_dataframe_from_path(self,filepath)->pd.DataFrame:
-        if filepath.split(".")[1] == "xlsx":
+    def __get_dataframe_from_path(self,filepath:Path)->pd.DataFrame:
+        if filepath.suffix == ".xlsx":
             data = pd.read_excel(filepath, parse_dates=[self.date_column], encoding=self.encoding)
-        elif filepath.split(".")[1] == "csv":
+        elif filepath.suffix== ".csv":
             data = pd.read_csv(filepath, parse_dates=[self.date_column], encoding=self.encoding, sep=self.csv_separator)
         else :
-            raise Exception("only csv and xlsx format are supported")
+            raise Exception("only csv and xlsx format are supported. Extension is " + filepath.suffix)
         if self.generate_id:
             data[self.id_column] = data[data.columns[0]].apply(lambda x: self.__generate_id())
         return data
 
-    def format_file(self, filepath)->str:
+    def run(self, *input)->str:
         """
         Format the given file to json format
         """
-        data = self.__get_dataframe_from_path(filepath)
+        data = self.__get_dataframe_from_path(input[0])
         # keep only the good columns
         data = data[self.__columns_to_keep]
         # drop empty verbatim if needed
@@ -128,51 +132,3 @@ class FileProcessor():
             if recoder.replace_column:
                 data.drop(recoder.column_name, axis=1, inplace=True)
         return data.to_json(orient="records")
-
-    
-
-def consolidate_sentiment(results:list):
-    consolidated = {f"{x['key']}||{x['tonality']}" for x in results}
-    consolidated = [{"key": x[0], "tonality": x[1]}
-                    for x in [x.split("||") for x in consolidated]]
-    global_tonality=None
-    for topic in consolidated:
-        if global_tonality==None:
-            global_tonality = topic["tonality"]
-            continue
-        if global_tonality!=topic["tonality"]:
-            global_tonality="mixed"
-            break
-    return consolidated, global_tonality
-
-
-def annnotate_sentiment_and_topic(doc: str,
-                                  topic_annotator : Annotator,
-                                  sentiment_annotator: Annotator,
-                                  sentencize_doc=True):
-    results = []
-    if sentencize_doc:
-        sentencizer = CustomSentencizer()
-        sentences = sentencizer.sentencize(doc)
-        for sentence in sentences:
-            topics = topic_annotator.annotate(sentence)
-            if len(topics):
-                sentiment = sentiment_annotator.annotate(sentence)
-                if not len(sentiment):
-                    sentiment = None
-                else:
-                    sentiment = sentiment[0]
-                for code in [{"key": t, "tonality": sentiment} for t in topics]:
-                    results.append(code)
-    else:
-        topics = topic_annotator.annotate( doc)
-        sentiment = sentiment_annotator.annotate(doc)
-        if not len(sentiment):
-            sentiment = None
-        else:
-            sentiment = sentiment[0]
-        for code in [{"key": t, "tonality": sentiment} for t in topics]:
-            results.append(code)
-    return consolidate_sentiment(results)
-
-    

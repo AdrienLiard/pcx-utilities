@@ -1,5 +1,5 @@
 import unittest
-from verbatim_processor.pre_processing import consolidate_sentiment
+from verbatim_processor.enrichment.classifier import consolidate_sentiment
 
 
 class TestProcess(unittest.TestCase):
