@@ -1,6 +1,6 @@
 from typing import Any, Callable, Dict, List, Union
 import json
-from ..processors import processors
+import verbatim_processor.processors as processors
 import logging
 
 

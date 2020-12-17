@@ -1,5 +1,5 @@
 import unittest
-from ..pre_processing import consolidate_sentiment
+from verbatim_processor.pre_processing import consolidate_sentiment
 
 
 class TestProcess(unittest.TestCase):
@@ -27,5 +27,3 @@ class TestProcess(unittest.TestCase):
         ]
         consolidated = consolidate_sentiment(result)
         self.assertEqual(consolidated[1],"negative")
-
-
