@@ -1,3 +1,4 @@
+from os import rename
 from pandas.io.parsers import ParserBase
 from ..enrichment.sentencizer import CustomSentencizer
 from ..kairntech import Annotator, KairntechClient
@@ -11,6 +12,7 @@ from .meta_column import MetaColumn
 from ..processors import processors
 from ..pipeline.task import Task
 from pathlib import Path
+from datetime import datetime
 
 
 class FileProcessor(Task):
@@ -74,6 +76,26 @@ class FileProcessor(Task):
             data[self.id_column] = data[data.columns[0]].apply(lambda x: self.__generate_id())
         return data
 
+    def __list_of_filters(self):
+        recoded = [r.replacement_column for r in self.recoders if r.replace_column]
+        dropped = [r.column_name for r in self.recoders if r.replace_column and r.drop_old_column]
+        meta_columns = [m.new_column_name if m.rename_column else m.column_name for m in self.meta_columns]
+        return [f for f in (meta_columns + recoded) if f not in dropped]
+
+    def __format_pcx(self, data):
+        formatted_data = []
+        filters = self.__list_of_filters()
+        for row in data:
+            formatted_row = {
+                "id": row["id"],
+                "dateInterview": row["dateInterview"].strftime("%Y-%m-%d %H:%M:%S"),
+                "text": row["text"],
+                "data": [{f:row[f] for f in filters}]
+            }
+            formatted_data.append(formatted_row)
+        return formatted_data
+            
+
     def run(self, *input)->str:
         """
         Format the given file to json format
@@ -97,4 +119,5 @@ class FileProcessor(Task):
             data[new_column] = data[recoder.column_name].apply(lambda x: recoder.apply(x))
             if recoder.replace_column:
                 data.drop(recoder.column_name, axis=1, inplace=True)
-        return data.to_json(orient="records")
+        pcx_formatted_data = self.__format_pcx(data.to_dict(orient="records"))
+        return json.dumps(pcx_formatted_data)

@@ -39,12 +39,13 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-            self.assertTrue("Pays" in output[0])
-            self.assertTrue("text" in output[0])
-            self.assertTrue("dateInterview" in output[0])
-            self.assertTrue("id" in output[0])
-            self.assertFalse("Country" in output[0])
-            self.assertFalse("Net Promoter Score" in output[0])
+        filters = [list(f.keys())[0] for f in output[0]["data"]]
+        self.assertTrue("Pays" in filters)
+        self.assertTrue("text" in output[0])
+        self.assertTrue("dateInterview" in output[0])
+        self.assertTrue("id" in output[0])
+        self.assertFalse("Country" in filters)
+        self.assertFalse("Net Promoter Score" in filters)
 
     def test_nps_recoder(self):
         """Test recoding a column without creating new column"""
@@ -58,9 +59,9 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-            self.assertTrue("Net Promoter Score" in output[0])
-            self.assertIn(output[0]["Net Promoter Score"], [
-                          "Promoteur", "Neutre", "Détracteur"])
+        filters = [list(f.keys())[0] for f in output[0]["data"]]
+        self.assertTrue("Net Promoter Score" in filters)
+
 
     def test_nps_recoder_replace_column(self):
         """Test recoding a column with column replacement"""
@@ -74,12 +75,10 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-        self.assertTrue("Net Promoter Score" in output[0])
-        self.assertTrue("NPS_recod" in output[0])
-        self.assertNotIn(output[0]["Net Promoter Score"], [
-                         "Promoteur", "Neutre", "Détracteur"])
-        self.assertIn(output[0]["NPS_recod"], [
-                      "Promoteur", "Neutre", "Détracteur"])
+        filters = [list(f.keys())[0] for f in output[0]["data"]]
+        self.assertTrue("Net Promoter Score" in filters)
+        self.assertTrue("NPS_recod" in filters)
+
 
     def test_nps_recoder_replace_column(self):
         """Test recoding a column with column drop"""
@@ -93,10 +92,10 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-            self.assertFalse("Net Promoter Score" in output[0])
-            self.assertTrue("NPS_recod" in output[0])
-            self.assertIn(output[0]["NPS_recod"], [
-                          "Promoteur", "Neutre", "Détracteur"])
+        filters = [list(f.keys())[0] for f in output[0]["data"]]
+        self.assertFalse("Net Promoter Score" in filters)
+        self.assertTrue("NPS_recod" in filters)
+
 
     def test_inject_processor(self):
         """Test injecting a dummy processor"""
@@ -110,4 +109,4 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-            self.assertTrue(output[0]["dummy"] == "TEST")
+        self.assertTrue(output[0]["data"][0]["dummy"] == "TEST")
