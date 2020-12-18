@@ -1,12 +1,13 @@
 from .client import KairntechClient
 import requests
 
+
 class Annotator():
 
     def __init__(self, client: KairntechClient, project_name: str, annotator_name: str):
         self.project_name = project_name
         self.annotator_name = annotator_name
-        self.client = client    
+        self.client = client
 
     def annotate(self, document: str):
         document = document.encode("utf-8")
