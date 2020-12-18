@@ -2,6 +2,7 @@ from pandas.io.parsers import ParserBase
 from ..enrichment.sentencizer import CustomSentencizer
 from ..kairntech import Annotator, KairntechClient
 import pandas as pd
+import numpy as np
 import uuid
 import json
 from typing import Any, Callable, Dict, List, Union
@@ -82,7 +83,8 @@ class FileProcessor(Task):
         data = data[self.__columns_to_keep]
         # drop empty verbatim if needed
         if self.drop_empty_verbatim:
-            data[self.verbatim_column].dropna(inplace=True)
+            data[self.verbatim_column].replace('', np.nan,inplace=True)
+            data.dropna(subset=[self.verbatim_column],inplace=True)
         # fill na if needed
         for meta in self.meta_columns:
             if meta.fill_na:
