@@ -8,7 +8,7 @@ class Task():
     self.name = name
     self.output_extension = "txt"
 
-  def run(self, input):
+  def run(self, *input):
     raise NotImplementedError
 
 class DummyTask(Task):

@@ -6,7 +6,12 @@
     {
       "label": "test",
       "type": "shell",
-      "command": "python3.6 -m unittest verbatim_processor"
+      "command": "coverage run --source verbatim_processor -m unittest verbatim_processor.test"
+    },
+    {
+      "label": "coverage",
+      "type": "shell",
+      "command": "coverage report -m"
     }
   ]
 }

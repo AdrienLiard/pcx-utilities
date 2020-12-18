@@ -58,24 +58,4 @@ class Recoder():
                 if self.raise_errors:     
                     raise error
                 else:
-                    return None
-
-    def serialize(self):
-        return {
-            "column_name": self.column_name,
-            "processor": self.processor.__name__ if self.processor_type=="func" else self.processor,
-            "raise_error": self.raise_error,
-            "replace_column": self.replacement_column if self.replace_column else self.replace_column,
-            "drop_old_column": self.drop_old_column
-        }
-
-    @staticmethod
-    def deserialize(dict:Dict):
-        return Recoder(dict["column_name"],
-                        getattr(processors,dict["processor"]) if type(dict["processor"])==str else dict["processor"],
-                        dict["replace_column"],
-                        dict["drop_old_column"],
-                        dict["raise_error"]
-                        )
-
-        
+                    return None        

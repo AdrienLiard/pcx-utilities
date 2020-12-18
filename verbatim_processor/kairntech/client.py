@@ -3,6 +3,13 @@ import json
 
 class KairntechClient():
 
+    @staticmethod
+    def get_headers(token, content_type="application/json"):
+        headers = {"accept": "application/json",
+                   "Content-Type": content_type}
+        headers["Authorization"] = "Bearer " + token
+        return headers
+
     def __get_headers(self, token=None, content_type="application/json"):
         headers = {"accept": "application/json",
                    "Content-Type": content_type}

@@ -26,16 +26,3 @@ class MetaColumn():
             self.na_filler = fill_na
         else:
             self.fill_na = False
-
-    def serialize(self):
-        return {
-            "column_name": self.column_name,
-            "rename_column": self.new_column_name if self.rename_column else self.rename_column,
-            "fill_na": self.na_filler if self.fill_na else self.fill_na
-        }
-
-    @staticmethod
-    def deserialize(dict:Dict):
-        return MetaColumn(dict["column_name"],
-                          dict["rename_column"],
-                          dict["fill_na"])

@@ -4,6 +4,7 @@ from spacy.pipeline import Sentencizer
 
 class CustomSentencizer():
 
+  @staticmethod
   def __custom_seg(doc):
     length = len(doc)
     for index, token in enumerate(doc):
@@ -20,5 +21,5 @@ class CustomSentencizer():
     try :
         doc = self.nlp(text)
         return [str(s) for s in doc.sents]
-    except : 
+    except Exception as e:
         return []

@@ -1,5 +1,5 @@
 from pandas.io.parsers import ParserBase
-from ..sentencizer import CustomSentencizer
+from ..enrichment.sentencizer import CustomSentencizer
 from ..kairntech import Annotator, KairntechClient
 import pandas as pd
 import uuid
@@ -13,28 +13,6 @@ from pathlib import Path
 
 
 class FileProcessor(Task):
-
-    @staticmethod
-    def deserialize(params)->Dict:
-        metas = []
-        for meta in params["meta_columns"]:
-            metas.append(MetaColumn.deserialize(meta))
-        recoders = []
-        for recoder in params["recoders"]:
-            recoders.append(Recoder.deserialize(recoder))
-        return FileProcessor(
-                        params["verbatim_column"],
-                        params["date_column"],
-                        params["id_column"],
-                        metas,
-                        recoders=recoders,
-                        drop_empty_verbatim=params["drop_empty_verbatim"],
-                        encoding = params["encoding"],
-                        generate_id = params["generate_id"],
-                        csv_separator=params["csv_separator"]
-                        )
-
-
 
     def __init__(self,
                 name,
@@ -75,20 +53,6 @@ class FileProcessor(Task):
                 else:
                     columns.append(meta_column.column_name)
         return columns
-
-
-    def serialize(self):
-        return {
-            "verbatim_column": self.verbatim_column,
-            "date_column": self.date_column,
-            "id_column": self.id_column,
-            "meta_columns": [m.serialize() for m in self.meta_columns],
-            "recoders": [r.serialize() for r in self.recoders],
-            "drop_empty_verbatim": self.drop_empty_verbatim,
-            "encoding": self.encoding,
-            "generate_id": self.generate_id,
-            "csv_separator": self.csv_separator
-        }
         
     def __generate_id(self):
         return str(uuid.uuid4())

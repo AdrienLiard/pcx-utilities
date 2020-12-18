@@ -1,5 +1,5 @@
 from ..kairntech import KairntechClient, Annotator
-
+from .sentencizer import CustomSentencizer
 
 def consolidate_sentiment(results:list):
     consolidated = {f"{x['key']}||{x['tonality']}" for x in results}
@@ -19,10 +19,10 @@ def consolidate_sentiment(results:list):
 def annnotate_sentiment_and_topic(doc: str,
                                   topic_annotator : Annotator,
                                   sentiment_annotator: Annotator,
-                                  sentencize_doc=True):
+                                  sentencizer=None):
     results = []
-    if sentencize_doc:
-        sentencizer = CustomSentencizer()
+    doc = str(doc)
+    if sentencizer:
         sentences = sentencizer.sentencize(doc)
         for sentence in sentences:
             topics = topic_annotator.annotate(sentence)
@@ -31,17 +31,16 @@ def annnotate_sentiment_and_topic(doc: str,
                 if not len(sentiment):
                     sentiment = None
                 else:
-                    sentiment = sentiment[0]
-                for code in [{"key": t, "tonality": sentiment} for t in topics]:
-                    results.append(code)
+                    sentiment = sentiment[0].lower()
+                    for code in [{"key": t, "tonality": sentiment} for t in topics]:
+                        results.append(code)
     else:
         topics = topic_annotator.annotate( doc)
         sentiment = sentiment_annotator.annotate(doc)
         if not len(sentiment):
             sentiment = None
         else:
-            sentiment = sentiment[0]
-        for code in [{"key": t, "tonality": sentiment} for t in topics]:
-            results.append(code)
+            sentiment = sentiment[0].lower()
+            for code in [{"key": t, "tonality": sentiment} for t in topics]:
+                results.append(code)
     return consolidate_sentiment(results)
-
