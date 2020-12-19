@@ -10,7 +10,7 @@ import math
 
 class PushPCXTask(Task):
 
-    def __init__(self, name, token, survey_name, pcx_api_url="https://collector.bva-cx-insights.com/api/1.0/verbatim"):
+    def __init__(self, name, token, survey_name, pcx_api_url="https://collector.bva-cx-insights.com/api/1.0/verbatim/"):
         super().__init__(name)
         self.output_extension = "json"
         self.pcx_api_url = pcx_api_url

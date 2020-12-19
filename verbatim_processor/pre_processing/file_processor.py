@@ -90,7 +90,7 @@ class FileProcessor(Task):
                 "id": row["id"],
                 "dateInterview": row["dateInterview"].strftime("%Y-%m-%d %H:%M:%S"),
                 "text": row["text"],
-                "data": [{f:row[f] for f in filters}]
+                "data": {f:row[f] for f in filters}
             }
             formatted_data.append(formatted_row)
         return formatted_data

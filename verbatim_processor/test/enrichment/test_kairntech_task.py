@@ -4,7 +4,8 @@ import os
 import json
 import requests
 from unittest.mock import Mock, patch
-from verbatim_processor.pre_processing.file_processor import FileProcessor
+import verbatim_processor
+from verbatim_processor.pre_processing import FileProcessor
 from verbatim_processor.pipeline.task import FileReaderTask
 from verbatim_processor.enrichment.sentencizer import CustomSentencizer
 from verbatim_processor.pipeline.task_runner import FileTaskRunner

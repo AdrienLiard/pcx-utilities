@@ -39,7 +39,7 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-        filters = [list(f.keys())[0] for f in output[0]["data"]]
+        filters = [f for f in output[0]["data"]]
         self.assertTrue("Pays" in filters)
         self.assertTrue("text" in output[0])
         self.assertTrue("dateInterview" in output[0])
@@ -59,7 +59,7 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-        filters = [list(f.keys())[0] for f in output[0]["data"]]
+        filters = [f for f in output[0]["data"]]
         self.assertTrue("Net Promoter Score" in filters)
 
 
@@ -75,7 +75,7 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-        filters = [list(f.keys())[0] for f in output[0]["data"]]
+        filters = [f for f in output[0]["data"]]
         self.assertTrue("Net Promoter Score" in filters)
         self.assertTrue("NPS_recod" in filters)
 
@@ -92,7 +92,7 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-        filters = [list(f.keys())[0] for f in output[0]["data"]]
+        filters = [f for f in output[0]["data"]]
         self.assertFalse("Net Promoter Score" in filters)
         self.assertTrue("NPS_recod" in filters)
 
@@ -109,4 +109,4 @@ class TestFileProcessor(unittest.TestCase):
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
             output = json.load(f)
-        self.assertTrue(output[0]["data"][0]["dummy"] == "TEST")
+        self.assertTrue(output[0]["data"]["dummy"] == "TEST")
