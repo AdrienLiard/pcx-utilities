@@ -1,5 +1,5 @@
 import unittest
-from verbatim_processor.pipeline.task import Task, DummyTask, FileReaderTask
+from verbatim_processor.pipeline.task import Task, DummyTask, FileReader
 from verbatim_processor.pipeline.task_runner import TaskRunner, FileTaskRunner
 from pathlib import Path
 import os
@@ -24,7 +24,7 @@ class TestTaskRunner(unittest.TestCase):
 
   def test_file_task_reader(self):
     """Test running a file reader task"""
-    task = FileReaderTask("file_reader_task", str(self.test_file_path))
+    task = FileReader("file_reader_task", str(self.test_file_path))
     task_runner = FileTaskRunner("file_task_runner", folder=Path(self.temp_path), date="today", survey="me")
     task_runner.run_task(task)
     self.assertTrue(task_runner.is_task_completed(task))
@@ -32,7 +32,7 @@ class TestTaskRunner(unittest.TestCase):
 
   def test_file_task_reader_as_dep(self):
     """Test using a file reader task as a dep"""
-    dep_task = FileReaderTask("file_reader_task_dep", str(self.test_file_path))
+    dep_task = FileReader("file_reader_task_dep", str(self.test_file_path))
     task = DummyTask("dummy task with dep")
     task_runner = FileTaskRunner("file_task_runner", folder=Path(self.temp_path), test="test")
     task_runner.run_task(task, [dep_task])

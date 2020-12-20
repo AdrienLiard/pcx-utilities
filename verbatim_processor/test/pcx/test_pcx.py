@@ -7,7 +7,7 @@ from verbatim_processor import pcx
 from verbatim_processor.pcx import PushPCXTask
 from unittest.mock import Mock, patch
 from verbatim_processor.pre_processing.file_processor import FileProcessor
-from verbatim_processor.pipeline.task import FileReaderTask
+from verbatim_processor.pipeline.task import FileReader
 from verbatim_processor.pipeline.task_runner import FileTaskRunner
 import logging
 
@@ -32,7 +32,7 @@ class TestPCX(unittest.TestCase):
       mock_post.return_value.text = "ok"
       headers = {"Authorization": "Token " + "token"}
       task_runner = FileTaskRunner("task_runner", self.temp_path)
-      file_reader = FileReaderTask("xl reader", self.test_file_path)
+      file_reader = FileReader("xl reader", self.test_file_path)
       fp = FileProcessor("fp", "VERBATIM", "DATE_INTER", "ID", [])
       pcx_task = PushPCXTask("push", "token", "survey_name")
       task_runner.run_task(file_reader)

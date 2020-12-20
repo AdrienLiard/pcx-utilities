@@ -1,6 +1,6 @@
 from verbatim_processor import processors
 from verbatim_processor.pre_processing import FileProcessor, Recoder, MetaColumn
-from verbatim_processor.pipeline.task import FileReaderTask
+from verbatim_processor.pipeline.task import FileReader
 from verbatim_processor.pipeline.task_runner import FileTaskRunner
 from verbatim_processor.processors.processors import recod_nps
 import unittest
@@ -24,7 +24,7 @@ class TestFileProcessor(unittest.TestCase):
     def test_run(self):
         fp = FileProcessor("fp", "VERBATIM", "DATE_INTER", "ID", [])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
-        file_reader = FileReaderTask("xl reader", self.test_file_path)
+        file_reader = FileReader("xl reader", self.test_file_path)
         task_runner.run_task(file_reader)
         task_runner.run_task(fp, [file_reader])
         self.assertTrue(task_runner.is_task_completed(fp))
@@ -34,7 +34,7 @@ class TestFileProcessor(unittest.TestCase):
         meta = MetaColumn("Country", "Pays")
         fp = FileProcessor("fp", "VERBATIM", "DATE_INTER", "ID", [meta])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
-        file_reader = FileReaderTask("xl reader", self.test_file_path)
+        file_reader = FileReader("xl reader", self.test_file_path)
         task_runner.run_task(file_reader)
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
@@ -54,7 +54,7 @@ class TestFileProcessor(unittest.TestCase):
         fp = FileProcessor("fp", "VERBATIM", "DATE_INTER",
                            "ID", [meta], [recoder])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
-        file_reader = FileReaderTask("xl reader", self.test_file_path)
+        file_reader = FileReader("xl reader", self.test_file_path)
         task_runner.run_task(file_reader)
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
@@ -70,7 +70,7 @@ class TestFileProcessor(unittest.TestCase):
         fp = FileProcessor("fp", "VERBATIM", "DATE_INTER",
                            "ID", [meta], [recoder])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
-        file_reader = FileReaderTask("xl reader", self.test_file_path)
+        file_reader = FileReader("xl reader", self.test_file_path)
         task_runner.run_task(file_reader)
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
@@ -87,7 +87,7 @@ class TestFileProcessor(unittest.TestCase):
         fp = FileProcessor("fp", "VERBATIM", "DATE_INTER",
                            "ID", [meta], [recoder])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
-        file_reader = FileReaderTask("xl reader", self.test_file_path)
+        file_reader = FileReader("xl reader", self.test_file_path)
         task_runner.run_task(file_reader)
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:
@@ -104,7 +104,7 @@ class TestFileProcessor(unittest.TestCase):
         fp = FileProcessor("fp", "VERBATIM", "DATE_INTER",
                            "ID", [meta], [recoder])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
-        file_reader = FileReaderTask("xl reader", self.test_file_path)
+        file_reader = FileReader("xl reader", self.test_file_path)
         task_runner.run_task(file_reader)
         task_runner.run_task(fp, [file_reader])
         with open(task_runner.output_filename(fp), "r") as f:

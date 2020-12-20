@@ -6,7 +6,7 @@ import requests
 from unittest.mock import Mock, patch
 import verbatim_processor
 from verbatim_processor.pre_processing import FileProcessor
-from verbatim_processor.pipeline.task import FileReaderTask
+from verbatim_processor.pipeline.task import FileReader
 from verbatim_processor.enrichment.sentencizer import CustomSentencizer
 from verbatim_processor.pipeline.task_runner import FileTaskRunner
 from verbatim_processor.enrichment.kairntech_task import KairntechTask
@@ -51,7 +51,7 @@ class TestKairntechTask(unittest.TestCase):
     def test_kairntech(self, mock_post):
 
         task_runner = FileTaskRunner("task_runner", self.temp_path)
-        file_reader = FileReaderTask("xl reader", self.test_file_path)
+        file_reader = FileReader("xl reader", self.test_file_path)
         fp = FileProcessor("fp", "VERBATIM", "DATE_INTER", "ID", [])
         task_runner.run_task(file_reader)
         task_runner.run_task(fp, [file_reader])
@@ -78,7 +78,7 @@ class TestKairntechTask(unittest.TestCase):
     def test_kairntech_on_csv_with_sentencizer(self, mock_post):
 
         task_runner = FileTaskRunner("task_runner", self.temp_path)
-        file_reader = FileReaderTask("xl reader", self.test_file_path_csv)
+        file_reader = FileReader("xl reader", self.test_file_path_csv)
         fp = FileProcessor("fp", "Verbatim", "Date_Reponse", "id", [
         ], encoding="ISO 8859-1", generate_id=True, csv_separator=";")
         task_runner.run_task(file_reader)
