@@ -1,5 +1,5 @@
 from verbatim_processor import processors
-from verbatim_processor.pre_processing import FileProcessor, MetaColumn
+from verbatim_processor.pre_processing import FileFormater, MetaColumn
 from verbatim_processor.pipeline.task import FileReader
 from verbatim_processor.pipeline.task_runner import FileTaskRunner
 from verbatim_processor.processors.processors import recod_nps
@@ -25,7 +25,7 @@ class TestRecoder(unittest.TestCase):
     def test_recoding(self):
         """Test recoding a column"""
         meta = MetaColumn("Net Promoter Score")
-        fp = FileProcessor("fp", "VERBATIM", "DATE_INTER", "ID", [meta])
+        fp = FileFormater("fp", "VERBATIM", "DATE_INTER", "ID", [meta])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
         file_reader = FileReader("xl reader", self.test_file_path)
         recoder = Recoder("nps_recod", "Net Promoter Score",
@@ -47,7 +47,7 @@ class TestRecoder(unittest.TestCase):
     def test_recoding_not_in_place(self):
         """Test recoding a column and creating new column"""
         meta = MetaColumn("Net Promoter Score")
-        fp = FileProcessor("fp", "VERBATIM", "DATE_INTER", "ID", [meta])
+        fp = FileFormater("fp", "VERBATIM", "DATE_INTER", "ID", [meta])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
         file_reader = FileReader("xl reader", self.test_file_path)
         recoder = Recoder("nps_recod", "Net Promoter Score",
@@ -64,7 +64,7 @@ class TestRecoder(unittest.TestCase):
     def test_recoding__with_drop(self):
         """Test recoding a column and creating new column"""
         meta = MetaColumn("Net Promoter Score")
-        fp = FileProcessor("fp", "VERBATIM", "DATE_INTER", "ID", [meta])
+        fp = FileFormater("fp", "VERBATIM", "DATE_INTER", "ID", [meta])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
         file_reader = FileReader("xl reader", self.test_file_path)
         recoder = Recoder("nps_recod", "Net Promoter Score",

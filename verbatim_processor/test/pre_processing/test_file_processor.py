@@ -1,5 +1,5 @@
 from verbatim_processor import processors
-from verbatim_processor.pre_processing import FileProcessor, MetaColumn
+from verbatim_processor.pre_processing import FileFormater, MetaColumn
 from verbatim_processor.pipeline.task import FileReader
 from verbatim_processor.pipeline.task_runner import FileTaskRunner
 from verbatim_processor.processors.processors import recod_nps
@@ -9,7 +9,7 @@ from pathlib import Path
 import json
 
 
-class TestFileProcessor(unittest.TestCase):
+class TestFileFormater(unittest.TestCase):
 
     def setUp(self) -> None:
         self.temp_path = Path(
@@ -22,7 +22,7 @@ class TestFileProcessor(unittest.TestCase):
             os.remove(Path(self.temp_path, f))
 
     def test_run(self):
-        fp = FileProcessor("fp", "VERBATIM", "DATE_INTER", "ID", [])
+        fp = FileFormater("fp", "VERBATIM", "DATE_INTER", "ID", [])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
         file_reader = FileReader("xl reader", self.test_file_path)
         task_runner.run_task(file_reader)
@@ -32,7 +32,7 @@ class TestFileProcessor(unittest.TestCase):
     def test_meta_column(self):
         """Test renaming a column"""
         meta = MetaColumn("Country", "Pays")
-        fp = FileProcessor("fp", "VERBATIM", "DATE_INTER", "ID", [meta])
+        fp = FileFormater("fp", "VERBATIM", "DATE_INTER", "ID", [meta])
         task_runner = FileTaskRunner("task_runner", self.temp_path)
         file_reader = FileReader("xl reader", self.test_file_path)
         task_runner.run_task(file_reader)

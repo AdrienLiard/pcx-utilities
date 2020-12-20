@@ -14,7 +14,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-class FileProcessor(Task):
+class FileFormater(Task):
 
     def __init__(self,
                 name,
