@@ -19,17 +19,6 @@ class DummyTask(Task):
   def run(self, *input):
     return self.name
 
-class Reader(Task):
-
-  def __init__(self, name, filename):
-    super().__init__(name)
-    
-
-  def run(self):
-    with open(self.filename, "rb") as f:
-      content = f.read()
-    return content
-
 
 class FileReader(Task):
 

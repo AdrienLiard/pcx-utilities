@@ -7,7 +7,6 @@ import numpy as np
 import uuid
 import json
 from typing import Any, Callable, Dict, List, Union
-from .recoder import Recoder
 from .meta_column import MetaColumn
 from ..processors import processors
 from ..pipeline.task import Task
@@ -23,7 +22,6 @@ class FileProcessor(Task):
                  date_column:str,
                  id_column:str,
                  meta_columns:List[MetaColumn],
-                 recoders:List[Recoder]=[],
                  drop_empty_verbatim:bool=True,
                  encoding:str='utf-8',
                  generate_id=False, 
@@ -33,7 +31,6 @@ class FileProcessor(Task):
         self.date_column = date_column
         self.id_column = id_column
         self.meta_columns = meta_columns
-        self.recoders = recoders
         self.drop_empty_verbatim = drop_empty_verbatim
         self.encoding = encoding
         self.generate_id = generate_id
@@ -77,10 +74,8 @@ class FileProcessor(Task):
         return data
 
     def __list_of_filters(self):
-        recoded = [r.replacement_column for r in self.recoders if r.replace_column]
-        dropped = [r.column_name for r in self.recoders if r.replace_column and r.drop_old_column]
         meta_columns = [m.new_column_name if m.rename_column else m.column_name for m in self.meta_columns]
-        return [f for f in (meta_columns + recoded) if f not in dropped]
+        return meta_columns
 
     def __format_pcx(self, data):
         formatted_data = []
@@ -113,11 +108,5 @@ class FileProcessor(Task):
                 data[meta.column_name].fillna(meta.na_filler)
         # rename columns if needed
         data.columns = self.__rename_columns(data.columns)
-        # apply recoders
-        for recoder in self.recoders:
-            new_column = recoder.replacement_column if recoder.replace_column else recoder.column_name
-            data[new_column] = data[recoder.column_name].apply(lambda x: recoder.apply(x))
-            if recoder.replace_column:
-                data.drop(recoder.column_name, axis=1, inplace=True)
         pcx_formatted_data = self.__format_pcx(data.to_dict(orient="records"))
         return json.dumps(pcx_formatted_data)
