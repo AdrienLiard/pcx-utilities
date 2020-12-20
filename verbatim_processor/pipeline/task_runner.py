@@ -11,7 +11,7 @@ class TaskRunner():
         self.args = kwargs
 
     def output_filename(self, task):
-        return self.name + "-" + task.name + "-" + "-".join([str(arg) for arg in self.args.values()]) + "." + task.output_extension
+        return self.name + "-" + task.name + "-" + "-".join([str(arg) for arg in self.args.values()]) + task.output_extension
 
     def is_task_completed(self, task):
         raise NotImplementedError

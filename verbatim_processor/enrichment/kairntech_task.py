@@ -7,7 +7,7 @@ class KairntechTask(Task):
 
   def __init__(self, name, topic_annotator:Annotator, sentiment_annotator:Annotator, sentencizer=None, sentiment_meta=True, topic_meta=True):
       super().__init__(name)
-      self.output_extension = "json"
+      self.output_extension = ".json"
       self.topic_annotator = topic_annotator
       self.sentiment_annotator = sentiment_annotator
       self.sentencizer = sentencizer

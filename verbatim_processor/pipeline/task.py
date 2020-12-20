@@ -6,7 +6,7 @@ class Task():
 
   def __init__(self, name):
     self.name = name
-    self.output_extension = "txt"
+    self.output_extension = ".txt"
 
   def run(self, *input):
     raise NotImplementedError
@@ -19,7 +19,19 @@ class DummyTask(Task):
   def run(self, *input):
     return self.name
 
-class FileReaderTask(Task):
+class Reader(Task):
+
+  def __init__(self, name, filename):
+    super().__init__(name)
+    
+
+  def run(self):
+    with open(self.filename, "rb") as f:
+      content = f.read()
+    return content
+
+
+class FileReader(Task):
 
   def __init__(self, name, filename):
     super().__init__(name)

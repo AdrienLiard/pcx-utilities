@@ -38,7 +38,7 @@ class FileProcessor(Task):
         self.encoding = encoding
         self.generate_id = generate_id
         self.csv_separator = csv_separator
-        self.output_extension = "json"
+        self.output_extension = ".json"
 
     def __rename_columns(self, original_columns):
         columns = []
