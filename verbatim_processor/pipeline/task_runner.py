@@ -1,4 +1,4 @@
-from .task import Task, FileReaderTask
+from .task import Task, FileReader
 from typing import List
 from pathlib import Path
 import logging
@@ -25,9 +25,10 @@ class TaskRunner():
 
 class FileTaskRunner(TaskRunner):
 
-    def __init__(self, name: str, folder: str, **kwargs):
+    def __init__(self, name: str, folder: str, verbose=False, **kwargs):
         super().__init__(name, **kwargs)
         self.folder = folder
+        self.verbose = verbose
 
     def is_task_completed(self, task: Task):
         return self.output_filename(task).exists()
@@ -42,6 +43,8 @@ class FileTaskRunner(TaskRunner):
         return True
 
     def run_task(self, task: Task, input_tasks: List[Task] = []):
+        if self.verbose:
+            logging.getLogger().setLevel(logging.DEBUG)
         logging.info(f"Start running {task.name}")
         if self.is_task_completed(task):
             logging.info(f"Task {task.name} is already completed")
@@ -49,7 +52,7 @@ class FileTaskRunner(TaskRunner):
         if self.check_input_tasks(input_tasks):
             task_output = task.run(*[self.output_filename(task)
                                      for task in input_tasks])
-            if type(task) == FileReaderTask:
+            if type(task) == FileReader:
                 with open(self.output_filename(task), "wb") as f:
                     f.write(task_output)
             else:
