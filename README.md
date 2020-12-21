@@ -1,1 +1,1 @@
-A package to easily create pipeline for bva-cx-insights.com
+A package to easily create pipeline for bva-cx-insights.com.
