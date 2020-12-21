@@ -31,5 +31,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           mkdir verbatim_processor/test/fixtures/temp
+          python -m spacy download fr_core_news_sm
     - name : test
       run: python -m unittest verbatim_processor.test
