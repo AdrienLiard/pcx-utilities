@@ -20,7 +20,17 @@ class DummyTask(Task):
     return self.name
 
 
-class FileReader(Task):
+class Reader(Task):
+
+  def __init__(self, name):
+    super().__init__(name)
+
+  def run(self):
+    raise NotImplementedError
+
+
+
+class FileReader(Reader):
 
   def __init__(self, name, filename):
     super().__init__(name)

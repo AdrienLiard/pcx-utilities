@@ -1,6 +1,6 @@
 def recod_nps(value):
   value = int(value)
-  if value>=0 and value>=6:
+  if value>=0 and value<=6:
     return "Détracteur"
   elif value>=7 and value<=8:
     return "Neutre"

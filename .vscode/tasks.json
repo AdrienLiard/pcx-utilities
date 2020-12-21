@@ -6,7 +6,7 @@
     {
       "label": "test",
       "type": "shell",
-      "command": "cd .. & coverage run --source verbatim_processor -m unittest verbatim_processor.test"
+      "command": "cd .. & coverage run --source verbatim_processor -m unittest verbatim_processor.test -v"
     },
     {
       "label": "coverage",

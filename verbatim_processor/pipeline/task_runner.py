@@ -52,7 +52,7 @@ class FileTaskRunner(TaskRunner):
         if self.check_input_tasks(input_tasks):
             task_output = task.run(*[self.output_filename(task)
                                      for task in input_tasks])
-            if type(task) == FileReader:
+            if isinstance(task, FileReader):
                 with open(self.output_filename(task), "wb") as f:
                     f.write(task_output)
             else:

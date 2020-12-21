@@ -5,3 +5,4 @@ from .tasks.test_task import TestTaskRunner
 from .pre_processing.test_file_processor import TestFileFormater
 from .enrichment.test_kairntech_task import TestKairntechTask
 from .recoder.test_recoder import TestRecoder
+from .tasks.pipeline import TestPipeline
