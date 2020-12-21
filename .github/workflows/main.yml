@@ -30,6 +30,7 @@ jobs:
       run : |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          python -m spacy download xx_ent_wiki_sm
           mkdir verbatim_processor/test/fixtures/temp
     - name : test
       run: python -m unittest verbatim_processor.test
