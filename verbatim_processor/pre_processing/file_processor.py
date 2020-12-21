@@ -64,7 +64,7 @@ class FileFormater(Task):
 
     def __get_dataframe_from_path(self,filepath:Path)->pd.DataFrame:
         if filepath.suffix == ".xlsx":
-            data = pd.read_excel(filepath, parse_dates=[self.date_column])
+            data = pd.read_excel(filepath, parse_dates=[self.date_column], engine="openpyxl")
         elif filepath.suffix== ".csv":
             data = pd.read_csv(filepath, parse_dates=[self.date_column], encoding=self.encoding, sep=self.csv_separator)
         else :
