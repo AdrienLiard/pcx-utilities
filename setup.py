@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="pcx-utilities",
-    version="0.1.0",
+    version="0.1.1",
     description="A package to easily create pipeline for bva-cx-insights.com",
     long_description=README,
     long_description_content_type="text/markdown",
