@@ -13,7 +13,7 @@ class CustomSentencizer():
     return doc
 
   def __init__(self):
-    self.nlp = spacy.load("fr_core_news_sm")
+    self.nlp = spacy.load("xx_ent_wiki_sm")
     self.nlp.add_pipe(self.__custom_seg, before='parser')
 
   
