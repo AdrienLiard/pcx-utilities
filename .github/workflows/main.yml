@@ -31,4 +31,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
     - name : test
-      run: python -m unittest verbatim-processor.test
+      run: python -m unittest verbatim_processor.test
