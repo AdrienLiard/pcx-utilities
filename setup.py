@@ -23,5 +23,5 @@ setup(
     ],
    packages=find_packages(exclude=("verbatim_processor.test.*","verbatim_processor.test")),
     include_package_data=True,
-    install_requires=["pandas", "requests", "spacy", "xlrd"]
+    install_requires=["pandas", "requests", "spacy", "xlrd", "openpyxl"]
 )

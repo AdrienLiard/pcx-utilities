@@ -2,3 +2,4 @@ requests
 spacy
 pandas
 xlrd
+openpyxl
